@@ -1,10 +1,8 @@
 import unittest
-import mine
+import mine/backup
+import mine/root
 
-suite "keys and secrets":
-
-  test "creates a random root key":
-    check createRootKey() != createRootKey()
+suite "backup and restore":
 
   test "creates shamir shares from the root key":
     let key = createRootKey()
@@ -16,21 +14,6 @@ suite "keys and secrets":
     let shares = key.shares(2, 3)
     let restored = restoreRootKey(shares[0..1])
     check restored == key
-
-  test "derives a secret":
-    var root = createRootKey()
-    var child = root.deriveSecret("child")
-    var empty: Secret
-    check child != empty
-    check child != root.asArray
-
-suite "wiping":
-
-  test "wipes a root key":
-    var key = createRootKey()
-    wipe(key)
-    var empty: Key
-    check key == empty
 
   test "wipes a share":
     var shares = createRootKey().shares(2, 3)
@@ -44,8 +27,3 @@ suite "wiping":
     var empty: array[3, Share]
     check shares == empty
 
-  test "wipes a secret":
-    var secret = createRootKey().deriveSecret("secret")
-    wipe(secret)
-    var empty: Secret
-    check secret == empty
