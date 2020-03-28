@@ -1,4 +1,7 @@
 import unittest
+import sequtils
+import mnemonic
+import mnemonic/words
 import mine/backup
 import mine/root
 
@@ -15,6 +18,12 @@ suite "backup and restore":
     let restored = restoreRootKey(shares[0..1])
     check restored == key
 
+  test "converts a shamir share to a mnemonic":
+    let shares = createRootKey().shares(2, 3)
+    let number = shares[0][0]
+    let bytes = shares[0][1..^1]
+    check shares[0].toMnemonic == indexToWord(number) & " " & encode(bytes)
+
   test "wipes a share":
     var shares = createRootKey().shares(2, 3)
     wipe(shares[0])
@@ -27,3 +36,7 @@ suite "backup and restore":
     var empty: array[3, Share]
     check shares == empty
 
+  test "wipes a (mnemonic) string":
+    var mnemonic = "some mnemonic"
+    wipe(mnemonic)
+    check cast[seq[byte]](mnemonic).allIt(it == 0)
