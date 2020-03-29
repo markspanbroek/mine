@@ -24,6 +24,23 @@ suite "backup and restore":
     let bytes = shares[0][1..^1]
     check shares[0].toMnemonic == indexToWord(number) & " " & encode(bytes)
 
+  test "converts a mnemonic into a shamir share":
+    let shares = createRootKey().shares(2, 3)
+    let mnemonic = shares[0].toMnemonic
+    check mnemonicToShare(mnemonic) == shares[0]
+
+  test "refuses to convert a mnemonic of the wrong length":
+    let shares = createRootKey().shares(2, 3)
+    let mnemonic = indexToWord(1) & " " & encode(shares[0][1..16])
+    expect Exception:
+      discard mnemonicToShare(mnemonic)
+
+  test "refuses to convert a mnemonic with a wrong first word":
+    let shares = createRootKey().shares(2, 3)
+    let mnemonic = indexToWord(256) & " " & encode(shares[0][1..^1])
+    expect Exception:
+      discard mnemonicToShare(mnemonic)
+
   test "wipes a share":
     var shares = createRootKey().shares(2, 3)
     wipe(shares[0])
