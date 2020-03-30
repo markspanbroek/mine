@@ -1,5 +1,5 @@
 import unittest
-import mine/root
+import minepkg/root
 
 suite "root keys":
 

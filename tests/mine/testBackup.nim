@@ -2,8 +2,8 @@ import unittest
 import sequtils
 import mnemonic
 import mnemonic/words
-import mine/backup
-import mine/root
+import minepkg/backup
+import minepkg/root
 
 suite "backup and restore":
 

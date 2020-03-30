@@ -1,7 +1,7 @@
 import unittest
-import mine/storage
-import mine/root
-import mine/secrets
+import minepkg/storage
+import minepkg/root
+import minepkg/secrets
 import options
 import keyring
 import os

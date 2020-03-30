@@ -1,6 +1,6 @@
 import unittest
-import mine/secrets
-import mine/root
+import minepkg/secrets
+import minepkg/root
 
 suite "secrets":
 

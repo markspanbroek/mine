@@ -1,7 +1,7 @@
-import mine/root
-import mine/secrets
-import mine/backup
-import mine/storage
+import minepkg/root
+import minepkg/secrets
+import minepkg/backup
+import minepkg/storage
 
 export root
 export secrets

@@ -3,7 +3,7 @@ import strutils
 import strformat
 import terminal
 import ./stdout
-import mine/displaying
+import minepkg/displaying
 
 suite "displaying secrets on a terminal":
 
