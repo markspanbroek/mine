@@ -3,6 +3,7 @@ import strutils
 import strformat
 import terminal
 import ./stdout
+import ./stdin
 import minepkg/console
 
 suite "console":
@@ -33,3 +34,26 @@ suite "console":
         ansiEraseLine &
         ansiCursorUp & ansiEraseLine &
         ansiCursorUp & ansiEraseLine
+
+  test "reads a secret":
+    stdin.redirect:
+      redirected.writeLine(secret)
+      check readSecret() == secret
+
+  test "clears line after reading a secret":
+    stdin.redirect:
+      redirected.writeLine(secret)
+      stdout.redirect:
+        discard readSecret()
+        check redirected.readAll() == ansiCursorUp & ansiEraseLine
+
+  test "clears multiple lines after reading a secret":
+    let threeLines = "123".repeat(terminalWidth())
+    stdin.redirect:
+      redirected.writeLine(threeLines)
+      stdout.redirect:
+        discard readSecret()
+        check redirected.readAll() ==
+          ansiCursorUp & ansiEraseLine &
+          ansiCursorUp & ansiEraseLine &
+          ansiCursorUp & ansiEraseLine

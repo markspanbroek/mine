@@ -1,9 +1,6 @@
 import unittest
 import os
-import posix_utils
-
-proc makeTempFile: (string, File) =
-  result = mkstemp getAppFileName().extractFileName()
+import ./temp
 
 template redirect*(body: untyped) =
   block:
