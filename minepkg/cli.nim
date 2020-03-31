@@ -13,10 +13,25 @@ commandline:
   subcommand createCommand, "create":
     discard
 
-proc displayAndClear(secret: string) {.inline.} =
-  let clear = display(secret)
+proc displayBackupExplanation =
+  echo:
+    "Write down the following 3 backup phrases. You'll need at least 2 of " &
+    "them to restore your passwords and keys. This is the ONLY way to " &
+    "recover from data loss! So keep the backup phrases in separate, safe " &
+    "places.\n"
+
+proc displayBlankedMnemonic =
+  echo:
+    "***** ***** ***** ***** ***** ***** ***** ***** ***** ***** " &
+    "***** ***** ***** ***** ***** ***** ***** ***** ***** ***** " &
+    "***** ***** ***** ***** *****"
+
+proc displayBackupPhrase(index: int, mnemonic: string) {.inline.} =
+  echo fmt"Write down backup phrase #{index+1}, and press a key to continue:"
+  let clear = display(mnemonic)
   discard getCh()
   clear()
+  displayBlankedMnemonic()
 
 proc create =
   let root = createRootKey()
@@ -25,8 +40,9 @@ proc create =
   wipe(root)
   let mnemonics = shares.mapIt(it.toMnemonic)
   wipe(shares)
-  for mnemonic in mnemonics:
-    displayAndClear(mnemonic)
+  displayBackupExplanation()
+  for index, mnemonic in mnemonics:
+    displayBackupPhrase(index, mnemonic)
     wipe(mnemonic)
   storeSecret("main", main)
   wipe(main)
