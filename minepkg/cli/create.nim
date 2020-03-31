@@ -5,7 +5,7 @@ import terminal
 import ../root
 import ../backup
 import ../storage
-import ../displaying
+import ../console
 import ../secrets
 import ./executable
 

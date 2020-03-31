@@ -4,7 +4,7 @@ import terminal
 import ../storage
 import ../secrets
 import ../passwords
-import ../displaying
+import ../console
 import ./executable
 
 proc displayErrorNoMainSecret =

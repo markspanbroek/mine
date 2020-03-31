@@ -3,9 +3,9 @@ import strutils
 import strformat
 import terminal
 import ./stdout
-import minepkg/displaying
+import minepkg/console
 
-suite "displaying secrets on a terminal":
+suite "console":
 
   const ansiEraseLine = &"\e[2K\e[1G"
   const ansiCursorUp = &"\e[1A"
@@ -17,13 +17,13 @@ suite "displaying secrets on a terminal":
       discard display(secret)
       check redirected.readAll() == secret
 
-  test "clears line afterwards":
+  test "clears line after displaying a secret":
     stdout.redirect:
       let clear = display(secret)
       clear()
       check redirected.readAll() == secret & ansiEraseLine
 
-  test "clears multiple lines":
+  test "clears multiple lines after displaying a secret":
     let threeLines = "123".repeat(terminalWidth())
     stdout.redirect:
       let clear = display(threeLines)
