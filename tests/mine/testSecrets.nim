@@ -5,15 +5,15 @@ import minepkg/root
 suite "secrets":
 
   test "derives a secret from a root key":
-    var root = createRootKey()
-    var child = root.deriveSecret("child")
+    let root = createRootKey()
+    let child = root.deriveSecret("child")
     var empty: Secret
     check child != empty
     check child != root.asArray
 
   test "derives a secret from another secret":
-    var parent = createRootKey().deriveSecret("parent")
-    var child = parent.deriveSecret("child")
+    let parent = createRootKey().deriveSecret("parent")
+    let child = parent.deriveSecret("child")
     var empty: Secret
     check child != empty
     check child != parent
@@ -27,7 +27,7 @@ suite "secrets":
     check parent.deriveSecret("child", 1) != parent.deriveSecret("child")
 
   test "wipes a secret":
-    var secret = createRootKey().deriveSecret("secret")
+    let secret = createRootKey().deriveSecret("secret")
     wipe(secret)
     var empty: Secret
     check secret == empty

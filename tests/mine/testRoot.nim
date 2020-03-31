@@ -7,7 +7,7 @@ suite "root keys":
     check createRootKey() != createRootKey()
 
   test "wipes a root key":
-    var key = createRootKey()
+    let key = createRootKey()
     wipe(key)
     var empty: Key
     check key == empty

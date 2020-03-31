@@ -42,18 +42,18 @@ suite "backup and restore":
       discard mnemonicToShare(mnemonic)
 
   test "wipes a share":
-    var shares = createRootKey().shares(2, 3)
+    let shares = createRootKey().shares(2, 3)
     wipe(shares[0])
     var empty: Share
     check shares[0] == empty
 
   test "wipes multiple shares":
-    var shares = createRootKey().shares(2, 3)
+    let shares = createRootKey().shares(2, 3)
     wipe(shares)
     var empty: array[3, Share]
     check shares == empty
 
   test "wipes a (mnemonic) string":
-    var mnemonic = "some mnemonic"
+    let mnemonic = "some mnemonic"
     wipe(mnemonic)
     check cast[seq[byte]](mnemonic).allIt(it == 0)

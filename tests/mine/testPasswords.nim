@@ -19,6 +19,6 @@ suite "passwords":
     check secret.toPassword == expected
 
   test "wipes a password":
-    var password = "some password"
+    let password = "some password"
     wipe(password)
     check cast[seq[byte]](password).allIt(it == 0)
