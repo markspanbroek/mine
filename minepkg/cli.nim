@@ -15,6 +15,8 @@ let executable = getAppFilename().extractFilename()
 commandline:
   subcommand createCommand, "create":
     discard
+  subcommand deleteCommand, "delete":
+    discard
 
 proc displayErrorMainSecretAlreadyExists =
   stderr.writeLine:
@@ -62,8 +64,20 @@ proc create =
   storeSecret("main", main)
   wipe(main)
 
+proc delete =
+  echo:
+    "Are you SURE that you want to delete your main secret? You'll only be " &
+    "able to restore it using the backup phrases! Delete the main secret? [y|N]"
+  if getCh() == 'y':
+    deleteSecret("main")
+    echo "Main secret deleted."
+  else:
+    echo "Aborted."
+
 proc main*() =
   if createCommand:
     create()
+  elif deleteCommand:
+    delete()
   else:
-    echo fmt"usage: {executable} create"
+    echo fmt"usage: {executable} [create|delete]"
