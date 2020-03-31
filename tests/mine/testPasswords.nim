@@ -2,11 +2,12 @@ import unittest
 import strutils
 import base64
 import re
+import sequtils
 import minepkg/root
 import minepkg/secrets
 import minepkg/passwords
 
-suite "Converting secrets to passwords":
+suite "passwords":
 
   test "derives password from secret":
     let secret = createRootKey().deriveSecret("secret")
@@ -16,3 +17,8 @@ suite "Converting secrets to passwords":
       .findAll(re".{3}")
       .join("-")
     check secret.toPassword == expected
+
+  test "wipes a password":
+    var password = "some password"
+    wipe(password)
+    check cast[seq[byte]](password).allIt(it == 0)

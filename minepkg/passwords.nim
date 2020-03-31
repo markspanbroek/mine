@@ -2,6 +2,9 @@ import strutils
 import base64
 import re
 import ./secrets
+import ./strings
+
+export wipe
 
 func toPassword*(secret: Secret): string =
   result = base64.encode(secret)

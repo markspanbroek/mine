@@ -4,8 +4,9 @@ import mnemonic
 import mnemonic/words
 from monocypher import crypto_wipe
 import ./root
+import ./strings
 
-export Share, shares
+export Share, shares, wipe
 
 func restoreRootKey*(shares: openArray[Share]): Key {.inline.} =
   combine(shares)
@@ -26,6 +27,3 @@ proc wipe*(share: Share) {.inline.} =
 proc wipe*(shares: openArray[Share]) {.inline.} =
   for i in shares.low..shares.high:
     wipe(shares[i])
-
-proc wipe*(mnemonic: string) {.inline.} =
-  crypto_wipe(cast[seq[byte]](mnemonic))
