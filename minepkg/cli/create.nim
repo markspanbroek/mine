@@ -8,6 +8,7 @@ import ../storage
 import ../console
 import ../secrets
 import ./executable
+import ./mnemonic
 
 proc displayErrorMainSecretAlreadyExists =
   stderr.writeLine:
@@ -26,12 +27,6 @@ proc displayBackupExplanation =
     "them to restore your passwords and keys. This is the ONLY way to " &
     "recover from data loss! So keep the backup phrases in separate, safe " &
     "places.\n"
-
-proc displayBlankedMnemonic =
-  echo:
-    "***** ***** ***** ***** ***** ***** ***** ***** ***** ***** " &
-    "***** ***** ***** ***** ***** ***** ***** ***** ***** ***** " &
-    "***** ***** ***** ***** *****"
 
 proc displayBackupPhrase(index: int, mnemonic: string) {.inline.} =
   echo fmt"Write down backup phrase #{index+1}, and press a key to continue:"
