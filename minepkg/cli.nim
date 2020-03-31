@@ -1,3 +1,4 @@
+import options
 import sequtils
 import strformat
 import os
@@ -9,9 +10,22 @@ import ./backup
 import ./displaying
 import ./storage
 
+let executable = getAppFilename().extractFilename()
+
 commandline:
   subcommand createCommand, "create":
     discard
+
+proc displayErrorMainSecretAlreadyExists =
+  stderr.writeLine:
+    "Unable to create main secret because it already exists. If you really " &
+    "want to create a new main secret you'll need to invoke " &
+    fmt"'{executable} delete' first."
+
+proc checkNoMainSecretYet =
+  if retrieveSecret("main").isSome:
+    displayErrorMainSecretAlreadyExists()
+    quit(QuitFailure)
 
 proc displayBackupExplanation =
   echo:
@@ -34,6 +48,7 @@ proc displayBackupPhrase(index: int, mnemonic: string) {.inline.} =
   displayBlankedMnemonic()
 
 proc create =
+  checkNoMainSecretYet()
   let root = createRootKey()
   let main = root.deriveSecret("main.0")
   let shares = root.shares(2, 3)
@@ -51,5 +66,4 @@ proc main*() =
   if createCommand:
     create()
   else:
-    let executable = getAppFilename().extractFilename()
     echo fmt"usage: {executable} create"
