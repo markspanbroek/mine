@@ -43,7 +43,7 @@ proc displayBackupPhrase(index: int, mnemonic: string) {.inline.} =
 proc create* =
   checkNoMainSecretYet()
   let root = createRootKey()
-  let main = root.deriveSecret("main|0")
+  let main = root.deriveSecret("main")
   let shares = root.shares(2, 3)
   wipe(root)
   let mnemonics = shares.mapIt(it.toMnemonic)

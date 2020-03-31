@@ -18,6 +18,14 @@ suite "secrets":
     check child != empty
     check child != parent
 
+  test "can derive different versions of a secret":
+    let root = createRootKey()
+    check root.deriveSecret("child", 0) == root.deriveSecret("child")
+    check root.deriveSecret("child", 1) != root.deriveSecret("child")
+    let parent = root.deriveSecret("parent")
+    check parent.deriveSecret("child", 0) == parent.deriveSecret("child")
+    check parent.deriveSecret("child", 1) != parent.deriveSecret("child")
+
   test "wipes a secret":
     var secret = createRootKey().deriveSecret("secret")
     wipe(secret)

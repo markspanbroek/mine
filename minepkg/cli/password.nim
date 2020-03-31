@@ -31,10 +31,9 @@ proc displayPassword(username, hostname, password: string) =
 
 proc password*(username, hostname: string) =
   let main = getMainSecret()
-  let passwords = deriveSecret(main, "passwords|0")
+  let passwords = deriveSecret(main, "passwords")
   wipe(main)
-  let password = deriveSecret(passwords,
-      fmt"{username}@{hostname}|0").toPassword
+  let password = deriveSecret(passwords, fmt"{username}@{hostname}").toPassword
   wipe(passwords)
   displayPassword(username, hostname, password)
   wipe(password)
