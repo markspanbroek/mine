@@ -7,5 +7,8 @@ type
 func deriveSecret*(key: Key, name: string): Secret {.inline.} =
   crypto_blake2b(name, key.asArray)
 
+func deriveSecret*(secret: Secret, name: string): Secret {.inline.} =
+  crypto_blake2b(name, secret)
+
 proc wipe*(secret: Secret) {.inline.} =
   crypto_wipe(secret)
