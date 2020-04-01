@@ -1,24 +1,10 @@
 import strformat
 import options
 import terminal
-import ../storage
 import ../secrets
 import ../passwords
 import ../console
-import ./executable
-
-proc displayErrorNoMainSecret =
-  stderr.writeLine:
-    "No main secret found. Please create one first using " &
-    fmt"'{getExecutableName()} create'"
-
-proc getMainSecret: Secret =
-  let main = retrieveSecret("main")
-  if main.isSome:
-    result = main.get()
-  else:
-    displayErrorNoMainSecret()
-    quit(QuitFailure)
+import ./mainsecret
 
 proc displayPassword(username, hostname, password: string) =
   echo:
