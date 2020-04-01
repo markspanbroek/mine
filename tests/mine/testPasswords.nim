@@ -3,9 +3,7 @@ import strutils
 import base64
 import re
 import sequtils
-import minepkg/root
-import minepkg/secrets
-import minepkg/passwords
+import mine
 
 suite "passwords":
 

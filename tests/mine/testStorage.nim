@@ -1,11 +1,9 @@
 import unittest
-import minepkg/storage
-import minepkg/root
-import minepkg/secrets
 import options
 import keyring
 import os
 import base64
+import mine
 
 suite "storage":
 
