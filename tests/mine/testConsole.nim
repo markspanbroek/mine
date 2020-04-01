@@ -10,19 +10,20 @@ suite "console":
 
   const ansiEraseLine = &"\e[2K\e[1G"
   const ansiCursorUp = &"\e[1A"
+  const ansiErasePreviousLine = ansiCursorUp & ansiEraseLine
 
   let secret = "some secret"
 
   test "displays a secret":
     stdout.redirect:
       discard display(secret)
-      check redirected.readAll() == secret
+      check redirected.readAll() == secret & "\n"
 
   test "clears line after displaying a secret":
     stdout.redirect:
       let clear = display(secret)
       clear()
-      check redirected.readAll() == secret & ansiEraseLine
+      check redirected.readAll() == secret & "\n" & ansiErasePreviousLine
 
   test "clears multiple lines after displaying a secret":
     let threeLines = "123".repeat(terminalWidth())
@@ -30,10 +31,7 @@ suite "console":
       let clear = display(threeLines)
       clear()
       check redirected.readAll() ==
-        threeLines &
-        ansiEraseLine &
-        ansiCursorUp & ansiEraseLine &
-        ansiCursorUp & ansiEraseLine
+        threeLines & "\n" & ansiErasePreviousLine.repeat(3)
 
   test "reads a secret":
     stdin.redirect:
@@ -45,7 +43,7 @@ suite "console":
       redirected.writeLine(secret)
       stdout.redirect:
         discard readSecret()
-        check redirected.readAll() == ansiCursorUp & ansiEraseLine
+        check redirected.readAll() == ansiErasePreviousLine
 
   test "clears multiple lines after reading a secret":
     let threeLines = "123".repeat(terminalWidth())
@@ -53,7 +51,4 @@ suite "console":
       redirected.writeLine(threeLines)
       stdout.redirect:
         discard readSecret()
-        check redirected.readAll() ==
-          ansiCursorUp & ansiEraseLine &
-          ansiCursorUp & ansiEraseLine &
-          ansiCursorUp & ansiEraseLine
+        check redirected.readAll() == ansiErasePreviousLine.repeat(3)
