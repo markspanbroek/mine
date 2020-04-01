@@ -5,6 +5,7 @@ import ./cli/create
 import ./cli/delete
 import ./cli/restore
 import ./cli/password
+import ./cli/mnemonic
 
 commandline:
   subcommand createCommand, "create":
@@ -18,6 +19,10 @@ commandline:
     argument hostname, string
     errormsg:
       fmt"Usage: {getExecutableName()} password <username> <hostname>"
+  subcommand mnemonicCommand, "mnemonic":
+    argument identifier, string
+    errormsg:
+      fmt"Usage: {getExecutableName()} mnemonic <identifier>"
 
 proc main*() =
   if createCommand:
@@ -28,5 +33,9 @@ proc main*() =
     restore()
   elif passwordCommand:
     password(username, hostname)
+  elif mnemonicCommand:
+    mnemonic(identifier)
   else:
-    echo fmt"Usage: {getExecutableName()} [create|delete|restore|password]"
+    echo:
+      fmt"Usage: {getExecutableName()} " &
+      "[create|delete|restore|password|mnemonic]"
