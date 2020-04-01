@@ -2,8 +2,8 @@ import unittest
 import strutils
 import strformat
 import terminal
-import ./stdout
-import ./stdin
+import ../helpers/stdout
+import ../helpers/stdin
 import minepkg/console
 
 suite "console":
