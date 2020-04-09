@@ -6,7 +6,7 @@ import ./strings
 
 export wipe
 
-func toPassword*(secret: Secret): string =
+proc toPassword*(secret: Secret): string =
   result = base64.encode(secret)
   result = result.replace(re"[^0-9A-Za-z]")
   result = result[0..<12]
