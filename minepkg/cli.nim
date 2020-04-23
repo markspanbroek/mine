@@ -1,41 +1,34 @@
-import strformat
-import commandeer
-import ./cli/executable
+import docopt
 import ./cli/create
 import ./cli/delete
 import ./cli/restore
 import ./cli/password
 import ./cli/mnemonic
 
-commandline:
-  subcommand createCommand, "create":
-    discard
-  subcommand deleteCommand, "delete":
-    discard
-  subcommand restoreCommand, "restore":
-    discard
-  subcommand passwordCommand, "password":
-    argument username, string
-    argument hostname, string
-    errormsg:
-      fmt"Usage: {getExecutableName()} password <username> <hostname>"
-  subcommand mnemonicCommand, "mnemonic":
-    argument identifier, string
-    errormsg:
-      fmt"Usage: {getExecutableName()} mnemonic <identifier>"
+const usage = """
+Mine̼, a password and key manager
+
+Usage:
+  mine create
+  mine delete
+  mine restore
+  mine password <username> <password>
+  mine mnemonic <identifier>
+  mine (-h | --help)
+
+Options:
+  -h, --help  Show this screen
+"""
 
 proc main*() =
-  if createCommand:
+  let args = docopt(usage)
+  if args["create"]:
     create()
-  elif deleteCommand:
+  elif args["delete"]:
     delete()
-  elif restoreCommand:
+  elif args["restore"]:
     restore()
-  elif passwordCommand:
-    password(username, hostname)
-  elif mnemonicCommand:
-    mnemonic(identifier)
-  else:
-    echo:
-      fmt"Usage: {getExecutableName()} " &
-      "[create|delete|restore|password|mnemonic]"
+  elif args["password"]:
+    password($args["<username>"], $args["<password>"])
+  elif args["mnemonic"]:
+    mnemonic($args["<identifier>"])
