@@ -1,19 +1,22 @@
 import terminal
 
+var output* = stdout
+var input* = stdin
+
 proc eraseCharacters(amount: int) =
   let lines = ((amount - 1) div terminalWidth()) + 1
   for i in 0..<lines:
-    cursorUp()
-    eraseLine()
-  stdout.flushFile()
+    output.cursorUp()
+    output.eraseLine()
+  output.flushFile()
 
 proc display*(secret: string): proc () =
   let length = secret.len
-  stdout.writeLine(secret)
-  stdout.flushFile()
+  output.writeLine(secret)
+  output.flushFile()
   result = proc () =
     eraseCharacters(length)
 
 proc readSecret*: string {.inline.} =
-  result = stdin.readLine()
+  result = input.readLine()
   eraseCharacters(result.len)

@@ -1,6 +1,7 @@
 import unittest
 import os
 import tempfile
+import minepkg/console
 
 template redirect*(body: untyped) =
   block:
@@ -13,14 +14,9 @@ template redirect*(body: untyped) =
     defer:
       close(redirected)
 
-    let saved = stdout
-    stdout = file
-
-    template check(conditions: untyped) {.inject.} =
-      stdout = saved
-      unittest.check(conditions)
-      stdout = file
+    let saved = console.output
+    console.output = file
 
     body
 
-    stdout = saved
+    console.output = saved

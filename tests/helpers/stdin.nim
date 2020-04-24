@@ -1,5 +1,6 @@
 import os
 import tempfile
+import minepkg/console
 
 template redirect*(body: untyped) =
   block:
@@ -12,9 +13,9 @@ template redirect*(body: untyped) =
     defer:
       close(redirected)
 
-    let saved = stdin
-    stdin = file
+    let saved = console.input
+    console.input = file
 
     body
 
-    stdin = saved
+    console.input = saved
