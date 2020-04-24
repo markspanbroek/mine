@@ -1,10 +1,10 @@
 import unittest
 import os
-import ./temp
+import tempfile
 
 template redirect*(body: untyped) =
   block:
-    let (filename, file) = makeTempFile()
+    let (file, filename) = mkstemp(mode=fmWrite)
     defer:
       close(file)
       removeFile(filename)

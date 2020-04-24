@@ -1,9 +1,9 @@
 import os
-import ./temp
+import tempfile
 
 template redirect*(body: untyped) =
   block:
-    let (filename, file) = makeTempFile()
+    let (file, filename) = mkstemp(mode=fmRead)
     defer:
       close(file)
       removeFile(filename)
