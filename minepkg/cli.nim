@@ -12,8 +12,8 @@ Usage:
   mine create
   mine delete
   mine restore
-  mine password <username> <password>
   mine mnemonic <identifier>
+  mine password <username> <hostname>
   mine -h | --help
 
 Options:
@@ -29,6 +29,6 @@ proc main*() =
   elif args["restore"]:
     restore()
   elif args["password"]:
-    password($args["<username>"], $args["<password>"])
+    password($args["<username>"], $args["<hostname>"])
   elif args["mnemonic"]:
     mnemonic($args["<identifier>"])
