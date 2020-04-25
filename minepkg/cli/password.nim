@@ -15,11 +15,13 @@ proc displayPassword(username, hostname, password: string) =
   clear()
   echo "***-***-***-***"
 
-proc password*(username, hostname: string) =
+proc password*(username, hostname: string, version: uint) =
   let main = getMainSecret()
   let passwords = deriveSecret(main, "passwords")
   wipe(main)
-  let password = deriveSecret(passwords, fmt"{username}@{hostname}").toPassword
+  let secret = deriveSecret(passwords, fmt"{username}@{hostname}", version)
   wipe(passwords)
+  let password = secret.toPassword
+  wipe(secret)
   displayPassword(username, hostname, password)
   wipe(password)

@@ -18,11 +18,11 @@ proc displayMnemonic(identifier, mnemonic: string) =
   clear()
   displayBlankedMnemonic()
 
-proc mnemonic*(identifier: string) =
+proc mnemonic*(identifier: string, version: uint) =
   let main = getMainSecret()
   let mnemonics = deriveSecret(main, "mnemonics")
   wipe(main)
-  let mnemonic = deriveSecret(mnemonics, identifier).toMnemonic
+  let mnemonic = deriveSecret(mnemonics, identifier, version).toMnemonic
   wipe(mnemonics)
   displayMnemonic(identifier, mnemonic)
   wipe(mnemonic)

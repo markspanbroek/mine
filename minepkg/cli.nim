@@ -4,6 +4,7 @@ import ./cli/delete
 import ./cli/restore
 import ./cli/password
 import ./cli/mnemonic
+import ./cli/version
 
 const usage = """
 Mine̼, a password and key manager
@@ -12,8 +13,8 @@ Usage:
   mine create
   mine delete
   mine restore
-  mine password <username> <hostname>
-  mine mnemonic <name>
+  mine password <username> <hostname> [-n <version>]
+  mine mnemonic <name> [-n <version>]
   mine -h | --help
 
 Commands:
@@ -25,6 +26,7 @@ Commands:
 
 Options:
   -h, --help  Show this screen
+  -n          Specify the version number of a password or mnemonic
 
 Examples:
   mine create
@@ -41,6 +43,6 @@ proc main*() =
   elif args["restore"]:
     restore()
   elif args["password"]:
-    password($args["<username>"], $args["<hostname>"])
+    password($args["<username>"], $args["<hostname>"], args.version)
   elif args["mnemonic"]:
-    mnemonic($args["<name>"])
+    mnemonic($args["<name>"], args.version)
