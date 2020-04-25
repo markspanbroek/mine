@@ -14,7 +14,7 @@ Usage:
   mine restore
   mine password <username> <password>
   mine mnemonic <identifier>
-  mine (-h | --help)
+  mine -h | --help
 
 Options:
   -h, --help  Show this screen
