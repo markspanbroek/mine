@@ -1,4 +1,4 @@
-version = "0.1.0"
+version = "0.2.0"
 author = "Mark Spanbroek"
 description = "Mine̼, a password and key manager"
 license = "MIT"
