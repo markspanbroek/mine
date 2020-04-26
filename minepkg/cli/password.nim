@@ -19,7 +19,7 @@ proc password*(username, hostname: string, version: uint) =
   let main = getMainSecret()
   let passwords = deriveSecret(main, "passwords")
   wipe(main)
-  let secret = deriveSecret(passwords, fmt"{username}@{hostname}", version)
+  let secret = deriveSecret(passwords, fmt"{username}|{hostname}", version)
   wipe(passwords)
   let password = secret.toPassword
   wipe(secret)
