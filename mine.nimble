@@ -5,6 +5,9 @@ license = "MIT"
 
 bin = @["mine"]
 
+if defined(macosx):
+  backend = "objc"
+
 requires "nim >= 1.0.6 & < 2.0.0"
 requires "sss >= 0.2.1 & < 0.3.0"
 requires "mnemonic >= 0.1.3 & < 0.2.0"
