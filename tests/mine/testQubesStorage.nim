@@ -1,8 +1,8 @@
-import unittest
-import os
-import minepkg/storage/raw
-
 when defined(linux):
+
+  import unittest
+  import os
+  import minepkg/storage/raw
 
   suite "qubes storage":
 

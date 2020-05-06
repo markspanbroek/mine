@@ -1,6 +1,5 @@
 import unittest
 import options
-import os
 import base64
 import minepkg/storage/raw
 import mine
