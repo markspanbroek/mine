@@ -17,7 +17,7 @@ bool setPassword(char *service, char *account, char *value, uint size) {
     NSData *valueData =
       [NSData dataWithBytes:value length:size];
 
-    OSStatus result = SecItemAdd(@{
+    OSStatus result = SecItemAdd((__bridge CFDictionaryRef)@{
       (id)kSecClass: (id)kSecClassGenericPassword,
       (id)kSecAttrService: serviceString,
       (id)kSecAttrAccount: accountString,
@@ -25,13 +25,13 @@ bool setPassword(char *service, char *account, char *value, uint size) {
     }, nil);
 
     if (result == errSecDuplicateItem) {
-      result = SecItemUpdate(@{
+      result = SecItemUpdate((__bridge CFDictionaryRef)@{
         (id)kSecClass: (id)kSecClassGenericPassword,
         (id)kSecAttrService: serviceString,
         (id)kSecAttrAccount: accountString,
         (id)kSecMatchLimit: (id)kSecMatchLimitOne,
         (id)kSecReturnData: @NO
-      }, @{
+      }, (__bridge CFDictionaryRef)@{
         (id)kSecValueData: valueData
       });
     }
@@ -47,9 +47,9 @@ int getPassword(char *service, char *account, char *buffer, uint bufferSize) {
     NSString *accountString =
       [NSString stringWithCString:account encoding: NSUTF8StringEncoding];
 
-    NSData *result;
+    CFTypeRef result = nil;
 
-    SecItemCopyMatching(@{
+    SecItemCopyMatching((__bridge CFDictionaryRef)@{
       (id)kSecClass: (id)kSecClassGenericPassword,
       (id)kSecAttrService: serviceString,
       (id)kSecAttrAccount: accountString,
@@ -61,8 +61,9 @@ int getPassword(char *service, char *account, char *buffer, uint bufferSize) {
       return -1;
     }
 
-    [result getBytes:buffer length:bufferSize];
-    return result.length;
+    NSData *data = (__bridge NSData *)result;
+    [data getBytes:buffer length:bufferSize];
+    return (int)data.length;
   }
 }
 
@@ -73,7 +74,7 @@ bool deletePassword(char *service, char *account) {
     NSString *accountString =
       [NSString stringWithCString:account encoding: NSUTF8StringEncoding];
 
-    OSStatus result = SecItemDelete(@{
+    OSStatus result = SecItemDelete((__bridge CFDictionaryRef)@{
       (id)kSecClass: (id)kSecClassGenericPassword,
       (id)kSecAttrService: serviceString,
       (id)kSecAttrAccount: accountString
