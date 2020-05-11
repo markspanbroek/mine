@@ -8,7 +8,8 @@ import options
 #import <Foundation/Foundation.h>;
 #import <Security/Security.h>;
 
-bool setPassword(char *service, char *account, char *value, uint size) {
+bool storeInKeychain(char *service, char *account, char *value, uint size,
+                     bool passwordless) {
   @autoreleasepool{
     NSString *serviceString =
       [NSString stringWithCString:service encoding: NSUTF8StringEncoding];
@@ -17,10 +18,25 @@ bool setPassword(char *service, char *account, char *value, uint size) {
     NSData *valueData =
       [NSData dataWithBytes:value length:size];
 
+    NSArray* trustedlist;
+    if (passwordless) {
+      trustedlist = nil; // default, includes the current application
+    } else {
+      trustedlist = @[];
+    }
+
+    SecAccessRef access;
+    SecAccessCreate(
+      (__bridge CFStringRef)@"Mine̼ main secret",
+      (__bridge CFArrayRef)trustedlist,
+      &access
+    );
+
     OSStatus result = SecItemAdd((__bridge CFDictionaryRef)@{
       (id)kSecClass: (id)kSecClassGenericPassword,
       (id)kSecAttrService: serviceString,
       (id)kSecAttrAccount: accountString,
+      (id)kSecAttrAccess: (__bridge id)access,
       (id)kSecValueData: valueData
     }, nil);
 
@@ -36,11 +52,14 @@ bool setPassword(char *service, char *account, char *value, uint size) {
       });
     }
 
+    CFRelease(access);
+
     return (result == errSecSuccess);
   }
 }
 
-int getPassword(char *service, char *account, char *buffer, uint bufferSize) {
+int retrieveFromKeychain(char *service, char *account, char *buffer,
+                         uint bufferSize) {
   @autoreleasepool{
     NSString *serviceString =
       [NSString stringWithCString:service encoding: NSUTF8StringEncoding];
@@ -67,7 +86,7 @@ int getPassword(char *service, char *account, char *buffer, uint bufferSize) {
   }
 }
 
-bool deletePassword(char *service, char *account) {
+bool deleteFromKeychain(char *service, char *account) {
   @autoreleasepool{
     NSString *serviceString =
       [NSString stringWithCString:service encoding: NSUTF8StringEncoding];
@@ -86,25 +105,27 @@ bool deletePassword(char *service, char *account) {
 
 """}
 
-proc setPassword(service, account, value: cstring, size: uint): bool
-                {.importc, nodecl.}
-proc getPassword(service, account: cstring, buffer: ptr char,
-                 bufferSize: uint): int {.importc, nodecl.}
-proc deletePassword(service, account: cstring): bool {.importc, nodecl.}
+proc storeInKeychain(service, account, value: cstring, size: uint,
+                      passwordless: bool = false): bool {.importc, nodecl.}
+proc retrieveFromKeychain(service, account: cstring, buffer: ptr char,
+                          bufferSize: uint): int {.importc, nodecl.}
+proc deleteFromKeychain(service, account: cstring): bool {.importc, nodecl.}
 
 proc getAppName: string =
   getAppFilename().extractFilename()
 
 proc retrieveString*(name: string): Option[string] =
   var buffer: array[4096, char]
-  let size = getPassword(getAppName(), name, addr buffer[0], buffer.len.uint)
+  let size = retrieveFromKeychain(getAppName(), name, addr buffer[0],
+                                  buffer.len.uint)
   if size == -1:
     result = none[string]()
   else:
     result = some(cast[string](buffer[0..<size]))
 
 proc storeString*(name: string, value: string) =
-  assert setPassword(getAppName(), name, value, value.len.uint)
+  assert storeInKeychain(getAppName(), name, value, value.len.uint,
+                         passwordless = defined(test))
 
 proc deleteString*(name: string) =
-  discard deletePassword(getAppName(), name)
+  discard deleteFromKeychain(getAppName(), name)
