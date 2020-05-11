@@ -1,14 +1,10 @@
-import ./secrets
-import keyring
-import os
+import secrets
+import storage/raw
 import base64
 import options
 
-proc getAppName: string =
-  getAppFilename().extractFilename()
-
 proc retrieveSecret*(name: string): Option[Secret] =
-  let retrieved = getPassword(getAppName(), name)
+  let retrieved = retrieveString(name)
   if retrieved.isNone:
     return none(Secret)
   var decoded = decode(retrieved.get())
@@ -19,7 +15,7 @@ proc retrieveSecret*(name: string): Option[Secret] =
 
 proc storeSecret*(name: string, secret: Secret) =
   assert retrieveSecret(name).isNone
-  setPassword(getAppName(), name, encode(secret))
+  storeString(name, encode(secret))
 
 proc deleteSecret*(name: string) =
-  deletePassword(getAppName(), name)
+  deleteString(name)

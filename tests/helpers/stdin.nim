@@ -5,13 +5,7 @@ import minepkg/console
 template redirect*(body: untyped) =
   block:
     let (file, filename) = mkstemp(mode=fmRead)
-    defer:
-      close(file)
-      removeFile(filename)
-
     let redirected {.inject.} = open(filename, fmWrite, bufSize = 0)
-    defer:
-      close(redirected)
 
     let saved = console.input
     console.input = file
@@ -19,3 +13,7 @@ template redirect*(body: untyped) =
     body
 
     console.input = saved
+
+    close(redirected)
+    close(file)
+    removeFile(filename)

@@ -1,13 +1,12 @@
 import unittest
 import options
-import keyring
-import os
 import base64
+import minepkg/storage/raw
 import mine
 
 suite "storage":
 
-  let name = "some name"
+  let name = "someName"
   let secret = createRootKey().deriveSecret(name)
 
   teardown:
@@ -21,12 +20,12 @@ suite "storage":
     check retrieveSecret("non-existing").isNone
 
   test "refuses to retrieve a secret that's not base64":
-    setPassword(getAppFilename().extractFilename(), name, "not base64!")
+    storeString(name, "not base64!")
     expect Exception:
       discard retrieveSecret(name)
 
   test "refuses to retrieve a secret of the wrong length":
-    setPassword(getAppFilename().extractFilename(), name, encode("too short"))
+    storeString(name, encode("too short"))
     expect Exception:
       discard retrieveSecret(name)
 
