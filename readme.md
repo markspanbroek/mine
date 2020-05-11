@@ -3,6 +3,20 @@ Mine̼, a password and key manager
 
 Warning: this is highly experimental. Do not use for real passwords and keys!
 
+Installation
+------------
+
+Currently only macOS and Qubes OS are supported.
+
+To install, download these sources and compile them with a recent version of [Nim][1] using the command `nimble build`.
+
+On macOS, you can now use the `mine` binary using the instructions below.
+
+On Qubes OS, you should only run the `mine` binary in the `vault` VM. Make
+sure that you move the `mine` binary to the `vault` VM before use.
+
+[1]: https://nim-lang.org
+
 Command Line Usage
 ------------------
 
