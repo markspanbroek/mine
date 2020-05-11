@@ -17,10 +17,25 @@ bool setPassword(char *service, char *account, char *value, uint size) {
     NSData *valueData =
       [NSData dataWithBytes:value length:size];
 
+    // Because we are using TouchID here, we need to switch to
+    // the iOS version of keychain, and this can only be done
+    // using the keychain entitlement, which requires a provisioning
+    // profile. Provisioning profiles can only be added to an app bundle
+    // and only when they are being distributed through the app store.
+    // Notarization is not enough.
+
+    SecAccessControlRef access = SecAccessControlCreateWithFlags(
+      nil,
+      kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly,
+      kSecAccessControlUserPresence,
+      nil
+    );
+
     OSStatus result = SecItemAdd((__bridge CFDictionaryRef)@{
       (id)kSecClass: (id)kSecClassGenericPassword,
       (id)kSecAttrService: serviceString,
       (id)kSecAttrAccount: accountString,
+      (id)kSecAttrAccessControl: (__bridge id)access,
       (id)kSecValueData: valueData
     }, nil);
 
@@ -35,6 +50,8 @@ bool setPassword(char *service, char *account, char *value, uint size) {
         (id)kSecValueData: valueData
       });
     }
+
+    CFRelease(access);
 
     return (result == errSecSuccess);
   }
