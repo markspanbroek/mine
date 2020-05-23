@@ -15,6 +15,7 @@ Usage:
   mine restore
   mine password <username> <hostname> [-n <version>]
   mine mnemonic <name> [-n <version>]
+  mine wifi <ssid> [-n <version>]
   mine -h | --help
 
 Commands:
@@ -23,6 +24,7 @@ Commands:
   restore   Restore a main secret from backup phrases
   password  Show the derived password for a username and hostname
   mnemonic  Show the derived mnemonic for a crypto wallet
+  wifi      Show the derived passwords for a wifi access point
 
 Options:
   -h, --help  Show this screen
@@ -46,3 +48,5 @@ proc main*() =
     password($args["<username>"], $args["<hostname>"], args.version)
   elif args["mnemonic"]:
     mnemonic($args["<name>"], args.version)
+  elif args["wifi"]:
+    password($args["<ssid>"], "wifi", args.version)
