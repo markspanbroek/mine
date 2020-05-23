@@ -38,6 +38,12 @@ Derive a mnemonic for a wallet called 'ethereum':
 mine mnemonic ethereum
 ```
 
+Derive a password for a wifi access point called 'my wifi':
+
+```bash
+mine wifi 'my wifi'
+```
+
 Delete the main secret from your computer:
 
 ```bash
