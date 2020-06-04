@@ -4,6 +4,7 @@ import ./cli/delete
 import ./cli/restore
 import ./cli/password
 import ./cli/mnemonic
+import ./cli/wifi
 import ./cli/version
 
 const usage = """
@@ -49,4 +50,4 @@ proc main*() =
   elif args["mnemonic"]:
     mnemonic($args["<name>"], args.version)
   elif args["wifi"]:
-    password($args["<ssid>"], "wifi", args.version)
+    wifi($args["<ssid>"], args.version)
