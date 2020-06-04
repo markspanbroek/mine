@@ -1,5 +1,4 @@
 import strformat
-import options
 import terminal
 import ../secrets
 import ../passwords
