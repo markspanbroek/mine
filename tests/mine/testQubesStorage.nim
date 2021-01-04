@@ -14,5 +14,5 @@ when defined(linux):
 
     test "creates config file with correct permissions":
       let filename = getConfigDir() / "mine.ini"
-      check existsFile(filename)
+      check fileExists(filename)
       check getFilePermissions(filename) == {fpUserRead, fpUserWrite}

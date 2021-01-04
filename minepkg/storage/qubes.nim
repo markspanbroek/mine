@@ -9,13 +9,13 @@ proc getConfigFilename: string =
   getConfigDir() / "mine.ini"
 
 proc loadConfig: Config =
-  if existsFile(getConfigFilename()):
+  if fileExists(getConfigFilename()):
     result = loadConfig(getConfigFilename())
   else:
     result = newConfig()
 
 proc writeConfig(config: Config) =
-  let creating = not existsFile(getConfigFilename())
+  let creating = not fileExists(getConfigFilename())
   writeConfig(config, getConfigFilename())
   if creating:
     setFilePermissions(getConfigFilename(), {fpUserWrite, fpUserRead})
