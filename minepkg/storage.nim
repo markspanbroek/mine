@@ -19,3 +19,9 @@ proc storeSecret*(name: string, secret: Secret) =
 
 proc deleteSecret*(name: string) =
   deleteString(name)
+
+proc storePassword*(username, host: string, version: int) =
+  discard
+
+proc retrievePasswords*: seq[seq[string]] =
+  discard

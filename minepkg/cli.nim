@@ -14,9 +14,10 @@ Usage:
   mine create
   mine delete
   mine restore
-  mine password <username> <hostname> [-n <version>]
-  mine mnemonic <name> [-n <version>]
-  mine wifi <ssid> [-n <version>]
+  mine password <username> <hostname> [-n <version>] [--save]
+  mine mnemonic <name> [-n <version>] [--save]
+  mine wifi <ssid> [-n <version>] [--save]
+  mine list
   mine -h | --help
 
 Commands:
@@ -26,10 +27,12 @@ Commands:
   password  Show the derived password for a username and hostname
   mnemonic  Show the derived mnemonic for a crypto wallet
   wifi      Show the derived passwords for a wifi access point
+  list      Shows a list of all saved passwords, mnemonics, ...
 
 Options:
   -h, --help  Show this screen
   -n          Specify the version number of a password or mnemonic
+  --save      Remembers this password, mnemonic, ...
 
 Examples:
   mine create

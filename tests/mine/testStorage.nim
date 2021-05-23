@@ -38,3 +38,16 @@ suite "storage":
     storeSecret(name, secret)
     expect Exception:
       storeSecret(name, secret)
+
+suite "invocation storage":
+
+  test "stores a password":
+    storePassword("user", "host", 42)
+
+  test "lists all stored passwords":
+    storePassword("user1", "host1", 1)
+    storePassword("user2", "host2", 2)
+    check retrievePasswords() == @[
+      @["user1", "host1", 1],
+      @["user2", "host2", 2]
+    ]
