@@ -5,8 +5,8 @@ import options
 
 {.emit: """
 
-#import <Foundation/Foundation.h>;
-#import <Security/Security.h>;
+#import <Foundation/Foundation.h>
+#import <Security/Security.h>
 
 bool storeInKeychain(char *service, char *account, char *value, uint size,
                      bool passwordless) {
