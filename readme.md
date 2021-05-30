@@ -32,6 +32,12 @@ Derive a password for user 'octo' at 'github.com':
 mine password octo github.com
 ```
 
+Derive a PIN for bank card 'visa':
+
+```bash
+mine pin visa
+```
+
 Derive a mnemonic for a wallet called 'ethereum':
 
 ```bash
