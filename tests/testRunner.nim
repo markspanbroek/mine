@@ -6,5 +6,6 @@ import mine/testQubesStorage
 import mine/testConsole
 import mine/testPasswords
 import mine/testMnemonics
+import mine/testPins
 
 {.warning[UnusedImport]: off.}
