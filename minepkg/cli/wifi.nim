@@ -6,13 +6,16 @@ import ../console
 import ./mainsecret
 
 proc displayPassword(ssid, password: string) =
-  echo:
-    fmt"Displaying password for WiFi access point {ssid}. " &
-    "Press a key to continue.\n"
-  let clear = display(password)
-  discard getCh()
-  clear()
-  echo "***-***-***-***"
+  if stdout.isatty:
+    echo:
+      fmt"Displaying password for WiFi access point {ssid}. " &
+      "Press a key to continue.\n"
+    let clear = display(password)
+    discard getCh()
+    clear()
+    echo "***-***-***-***"
+  else:
+    echo password
 
 proc wifi*(ssid: string, version: uint) =
   let main = getMainSecret()
