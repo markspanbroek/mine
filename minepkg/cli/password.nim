@@ -6,13 +6,16 @@ import ../console
 import ./mainsecret
 
 proc displayPassword(username, hostname, password: string) =
-  echo:
-    fmt"Displaying password for {username} at {hostname}. " &
-    "Press a key to continue.\n"
-  let clear = display(password)
-  discard getCh()
-  clear()
-  echo "***-***-***-***"
+  if stdout.isatty:
+    echo:
+      fmt"Displaying password for {username} at {hostname}. " &
+      "Press a key to continue.\n"
+    let clear = display(password)
+    discard getCh()
+    clear()
+    echo "***-***-***-***"
+  else:
+    echo password
 
 proc password*(username, hostname: string, version: uint) =
   let main = getMainSecret()

@@ -12,11 +12,14 @@ proc displayBlankedMnemonic* =
     "***** ***** ***** ***** *****"
 
 proc displayMnemonic(identifier, mnemonic: string) =
-  echo &"Displaying mnemonic for {identifier}. Press a key to continue\n"
-  let clear = display(mnemonic)
-  discard getCh()
-  clear()
-  displayBlankedMnemonic()
+  if stdout.isatty:
+    echo &"Displaying mnemonic for {identifier}. Press a key to continue\n"
+    let clear = display(mnemonic)
+    discard getCh()
+    clear()
+    displayBlankedMnemonic()
+  else:
+    echo mnemonic
 
 proc mnemonic*(identifier: string, version: uint) =
   let main = getMainSecret()
