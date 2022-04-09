@@ -3,7 +3,7 @@ author = "Mark Spanbroek"
 description = "Mine̼, a password and key manager"
 license = "MIT"
 
-bin = @["mine"]
+bin = @["mine", "mine_export"]
 
 if defined(macosx):
   backend = "objc"
