@@ -21,6 +21,7 @@ suite "passwords":
     check secret.toPassword == expected
 
   test "wipes a password":
-    let password = "some password"
+    let secret = createRootKey().deriveSecret("secret")
+    let password = secret.toPassword
     wipe(password)
     check cast[seq[byte]](password).allIt(it == 0)

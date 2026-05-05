@@ -53,6 +53,7 @@ suite "backup and restore":
     check shares == empty
 
   test "wipes a (mnemonic) string":
-    let mnemonic = "some mnemonic"
+    let shares = createRootKey().shares(2, 3)
+    let mnemonic = shares[0].toMnemonic
     wipe(mnemonic)
     check cast[seq[byte]](mnemonic).allIt(it == 0)

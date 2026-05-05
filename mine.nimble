@@ -13,7 +13,7 @@ else:
 task test, "Runs the test suite":
   exec "nim " & backend & " --run --path:. --define:test tests/testRunner"
 
-requires "sss >= 0.3.2 & < 0.4.0"
-requires "mnemonic >= 0.1.3 & < 0.2.0"
-requires "monocypher >= 0.2.0 & < 0.3.0"
-requires "docopt >= 0.6.8 & < 0.7.0"
+requires "sss >= 0.3.3 & < 0.4.0"
+requires "mnemonic >= 0.1.4 & < 0.2.0"
+requires "monocypher >= 0.3.0 & < 0.4.0"
+requires "docopt >= 0.7.1 & < 0.8.0"

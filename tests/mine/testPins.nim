@@ -20,6 +20,7 @@ suite "PINs":
     check 4500 < average and average < 5500
 
   test "wipes a PIN":
-    let pin = "1234"
+    let secret = createRootKey().deriveSecret("secret")
+    let pin = secret.toPin
     wipe(pin)
     check cast[seq[byte]](pin).allIt(it == 0)
