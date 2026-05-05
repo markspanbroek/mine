@@ -1,11 +1,11 @@
-import unittest
-import os
-import tempfile
+import std/unittest
+import std/os
+import std/tempfiles
 import minepkg/console
 
 template redirect*(body: untyped) =
   block:
-    let (file, filename) = mkstemp(mode=fmWrite)
+    let (file, filename) = createTempFile("mine", "")
     let redirected {.inject.} = open(filename)
 
     let saved = console.output
